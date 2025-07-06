@@ -1,0 +1,58 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Educational Website</title>
+  <link rel="stylesheet" href="{% static 'css/student.css' %}">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">Placement Management System</div>
+      <ul class="nav-links">
+        <li><a href="{%url 'home'%}">HOME</a></li>
+        <li><a href="{% url 'admin'%}">ADMIN</a></li>
+        <li><a href="{% url 'company'%}">COMPANY</a></li>
+      </ul>
+      <div class="nav-buttons">
+        <a href="{% url 'login' %}" class="login">Login</a>
+        <a href="{% url 'student_list' %}" class="btn">Become a member</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="welcome">Welcome</p>
+      <h1>25K+ STUDENTS TRUST US</h1>
+      <p class="subtext">We know how large objects will act, but things on a small scale just do not act that way.</p>
+      <a href="{% url 'login' %}" class="btn">Join Us</a>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services">
+    <div class="service-box">
+      <img src="https://img.icons8.com/ios-filled/50/000000/book.png" alt="Books" />
+      <h3>Books Library</h3>
+      <p>The gradual accumulation of information about atomic and small-scale behaviour...</p>
+    </div>
+    <div class="service-box">
+      <img src="https://img.icons8.com/ios-filled/50/000000/market-square.png" alt="Market" />
+      <h3>Market Analysis</h3>
+      <p>The gradual accumulation of information about atomic and small-scale behaviour...</p>
+    </div>
+    <div class="service-box">
+      <img src="https://img.icons8.com/ios-filled/50/000000/teacher.png" alt="Teacher" />
+      <h3>Certified Teacher</h3>
+      <p>The gradual accumulation of information about atomic and small-scale behaviour...</p>
+    </div>
+  </section>
+
+</body>
+</html>

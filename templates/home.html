@@ -8,25 +8,28 @@
 </head>
 
     <header>
-        <h1>Welcome to the Project</h1>
+       <div class="logo">Placement Management System</div>
     {% if request.session.logged_in %}
         <p id="user_login">Welcome, {{ request.session.username }}! (<a href="{% url 'logout' %}">Logout</a>)</p>
     {% else %}
-        <p><a href="{% url 'login' %}">Login</a></p>
+        <p></p>
     {% endif %}
-    </header>
 
     <nav>
-        <a href="/students/">Students</a>
-        <a href="/companies/">Companies</a>
-        <a href="/admins/">Admins</a>
-        <a href="/login/" class="login-btn">Login</a>
+      <a href="{%url 'student'%}" class="bt" >STUDENT LOGIN</a>
+      <a href="{%url 'admin'%}" class="bt" >ADMIN LOGIN</a>
+      <a href="{%url 'company'%}"  class="bt">COMPANY LOGIN</a>
+      
     </nav>
+    </header>
+
 
     <main>
-        <section>
-            <h2>Getting Started</h2>
-            <p>Use the navigation above to browse students, companies, and admins.</p>
+        <section class="hero">
+        <h1>PLACEMENT MANAGEMENT SYSTEM</h1>
+        <p>We are here to build your skills and career with our proven passion and reality.<br>
+        Click below to get our current drive details.</p>
+        <a href="#" class="btn">CURRENT DRIVES</a>
         </section>
     </main>
 

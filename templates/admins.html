@@ -101,38 +101,44 @@
 
 <div class="container">
     <h2>Admin Registration Form</h2>
-    <form id="adminForm" method="post"class="form-control" action="{% url 'admin_list' %}">
-         {% csrf_token %}
-
+    {% if messages %}
+    {% for message in messages %}
+        <p style="color: green;" id="message"> Form submitted successfully! ✅</p>
+    {% endfor %}
+    {% endif %}
+    <div class="success-message" id="successMessage">
+        Admin form submitted successfully! ✅
+    </div>    
+    <form id="adminForm">
+        {% csrf_token %}
         <div class="form-group">
             <label for="adminName">Full Name:</label>
-            <input type="text" id="adminName" name="admin_name" required>
+            <input type="text" id="adminName" required>
         </div>
 
         <div class="form-group">
             <label for="adminId">Admin ID:</label>
-            <input type="text" id="adminId"name="admin_id" required>
+            <input type="text" id="adminId" required>
         </div>
 
         <div class="form-group">
             <label for="adminEmail">Email:</label>
-            <input type="email" id="adminEmail" name="admin_email" required>
+            <input type="email" id="adminEmail" required>
         </div>
 
         <div class="form-group">
             <label for="adminPhone">Phone Number:</label>
-            <input type="tel" id="adminPhone" name="admin_phone">
+            <input type="tel" id="adminPhone">
         </div>
 
         <div class="form-group">
             <label for="department">Department:</label>
-            <input type="text" id="department" name="department" required>
+            <input type="text" id="department" required>
         </div>
 
         <div class="form-group">
             <label for="role">Role:</label>
-            <select id="role" name="role" required>
-                <option value="" disabled selected>Select Role</option>
+            <select id="role">
                 <option value="Placement Head">Placement Head</option>
                 <option value="Placement Officer">Placement Officer</option>
                 <option value="Coordinator">Coordinator</option>
@@ -141,23 +147,16 @@
 
         <div class="form-group">
             <label for="experience">Years of Experience:</label>
-            <input type="number" id="experience" name="experience" min="0" required>
+            <input type="number" id="experience">
         </div>
 
         <div class="form-group">
             <label for="password">Set Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" required>
         </div>
 
-        <button type="submit" name="submit">Submit</button>
+        <button type="submit">Submit</button>
     </form>
-
-    {% if messages %}
-    {% for message in messages %}
-        <p style="color:green; text-align: center;" id="message">form submitted successfully! ✅</p>
-    {% endfor %}
-{% endif %}
 </div>
-
 </body>
 </html>

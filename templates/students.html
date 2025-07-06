@@ -1,5 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
+<ed!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -85,6 +84,9 @@
             text-align: center;
             margin-top: 20px;
         }
+        #message {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -101,17 +103,25 @@
 
 <div class="container">
     <h2>Student Registration Form</h2>
-    <form id="studentForm" method="post" class="form-control" action="{% url 'student_list' %}">
+    {% if messages %}
+    {% for message in messages %}
+        <p style="color: green;" id="message"> Form submitted successfully! ✅</p>
+    {% endfor %}
+    {% endif %}
+    <div class="success-message" id="successMessage">
+        Form submitted successfully! ✅
+    </div>
+    <form id="studentForm" method="post"class="form-control" action="{% url 'student_list' %}">
         {% csrf_token %}
-        
+
         <div class="form-group">
-            <label for="name">Full Name:</label>
-            <input type="text" id="name" name="name" required>
+            <label for="studentName">Full Name:</label>
+            <input type="text" id="studentName"name="name" required>
         </div>
 
         <div class="form-group">
-            <label for="student_id">Student ID:</label>
-            <input type="text" id="student_id" name="student_id" required>
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentId" name="student_id" required>
         </div>
 
         <div class="form-group">
@@ -120,8 +130,8 @@
         </div>
 
         <div class="form-group">
-            <label for="phone_number">Phone Number:</label>
-            <input type="tel" id="phone_number" name="phone_number">
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
         </div>
 
         <div class="form-group">
@@ -130,9 +140,8 @@
         </div>
 
         <div class="form-group">
-            <label for="year_of_study">Year of Study:</label>
-            <select id="year_of_study" name="year_of_study" required>
-                <option value="" disabled selected>Select Year</option>
+            <label for="year">Year of Study:</label>
+            <select id="year" name="year">
                 <option value="1st Year">1st Year</option>
                 <option value="2nd Year">2nd Year</option>
                 <option value="3rd Year">3rd Year</option>
@@ -147,12 +156,12 @@
 
         <div class="form-group">
             <label for="skills">Skills:</label>
-            <textarea id="skills" rows="2" name="skills" required></textarea>
+            <textarea id="skills" rows="2" name="skills"></textarea>
         </div>
 
         <div class="form-group">
-            <label for="resume_link">Resume Link:</label>
-            <input type="url" id="resume_link" name="resume_link" placeholder="https://example.com/resume.pdf" required>
+            <label for="resume">Resume Link:</label>
+            <input type="url" id="resume" name="resume">
         </div>
 
         <div class="form-group">
@@ -160,13 +169,9 @@
             <input type="password" id="password" name="password" required>
         </div>
 
-        <button type="submit" name="submit">Submit</button>
+        <button type="submit">Submit</button>
     </form>
-{% if messages %}
-    {% for message in messages %}
-        <p style="color:green; text-align: center;" id="message">form submitted successfully! ✅</p>
-    {% endfor %}
-{% endif %}
 </div>
+
 </body>
 </html>

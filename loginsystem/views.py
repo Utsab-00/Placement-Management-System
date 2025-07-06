@@ -155,3 +155,16 @@ def logout_view(request):
     request.session.flush()
     messages.success(request, 'You have been logged out.')
     return redirect('login')
+
+# Dashboards
+def admin_page(request):
+    """Render the admin page."""
+    return render(request, 'admin_page.html')
+
+def company_page(request):
+    """Render the company page."""
+    return render(request, 'company_page.html')
+
+def student_page(request):
+    """Render the student page."""
+    return render(request, 'student_page.html')
