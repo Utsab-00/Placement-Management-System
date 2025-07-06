@@ -2,97 +2,100 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
 }
 
 body {
-  background: #f5f5f5;
+  font-family: Arial, sans-serif;
+  background-image: url("/static/Image/home3.jpg");
+  color: #333;
+  text-align: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height:60vw;
+  margin: 0;
+  display:flex;
+  flex-direction:column;
+  width: auto;
 }
 
-.navbar {
+header {
+ 
+  color: white;
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1751f0;
-  padding: 15px 50px;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10;
 }
 
-.logo {
-  color: white;
+header .logo {
   font-weight: bold;
 }
 
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-}
-
-.nav-links a {
+header nav a {
   color: white;
+  margin: 0 15px;
   text-decoration: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-
-.nav-links a:hover,
-.nav-links .active {
-  background-color: #ff5c33;
-  color: white;
-}
-
-.search-box input {
-  padding: 6px 15px;
-  border-radius: 20px;
-  border: none;
-  outline: none;
+  font-size: 14px;
 }
 
 .hero {
-  background:linear-gradient(rgb(156, 108, 203),rgb(2, 12, 59));
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-image:url("/static/Image/home3.jpg");
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  padding-top: 80px;
+  padding: 80px 20px 40px;
+
 }
 
-.hero-content {
-  color: blue;
-  padding-left: 50px;
-  max-width: 600px;
-}
-
-.hero-content h4 {
-  font-size: 16px;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-}
-
-.hero-content h1 {
-  font-size: 48px;
-  font-weight: bold;
+.hero h1 {
+  color: #e86426;
+  font-size: 32px;
   margin-bottom: 20px;
 }
 
+.hero p {
+  font-size: 16px;
+  color: #f9f9f9;
+  margin-bottom: 30px;
+}
+
 .btn {
-  background-color: #2b44ff;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 25px;
+  display: inline-block;
+  background-color: #f76c6c;
+  color: rgb(244, 243, 243);
+  padding: 12px 25px;
   text-decoration: none;
+  border-radius: 25px;
   font-weight: bold;
-  transition: background 0.3s;
+  transition: background-0.5s;
 }
 
 .btn:hover {
-  background-color: #1a32d1;
+  background-color: #680404;
+}
+
+.bt  
+{
+ display: inline-block;
+  
+  color: rgb(244, 243, 243);
+  padding: 12px 25px;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: background-0.5s;
+
+}
+
+.bt:hover {
+  background-color: #71a4ca;
+}
+
+footer {
+   text-align: center;
+    position: relative;
+    bottom: 0;
+    background-color: black;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    margin-top: auto;
+    height: 60px;
+    
 }
