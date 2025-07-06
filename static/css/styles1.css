@@ -57,7 +57,7 @@ body {
   background:linear-gradient(rgb(156, 108, 203),rgb(2, 12, 59));
   background-size: cover;
   background-repeat: no-repeat;
-  background-image:url("/static/Image/admin.jpg");
+  background-image:url("/static/Image/home3.jpg");
   height: 100vh;
   display: flex;
   align-items: center;
