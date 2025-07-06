@@ -54,6 +54,7 @@ body {
 .hero {
   position: relative;
   background:linear-gradient(white,blue);
+  background-image:url("/static/Image/company.jpg");
   height: 90vh;
   display: flex;
   align-items: center;
