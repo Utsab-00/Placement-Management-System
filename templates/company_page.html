@@ -9,9 +9,6 @@
 </head>
 <body>
   <header>
-    <div class="top-bar">
-      <p>🕗 8:00 - 9:00 Mon - Fri &nbsp; | &nbsp; 📞 +123 456 7890 For Appointment</p>
-    </div>
     <nav class="navbar">
       <div class="logo">Placement Management System</div>
       <ul class="nav-links">
@@ -19,7 +16,12 @@
         <li><a href="{%url 'admin'%}">Admin</a></li>
         <li><a href="{%url 'student'%}">Student</a></li>
       </ul>
+      <div class="auth-buttons">
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'company_list' %}">Signup</a>
+    </div>
     </nav>
+
   </header>
 
   <section class="hero">
@@ -28,10 +30,12 @@
       <h1>Fastest Way to Achieve Success</h1>
       <p>Lorem ipsum dolor sit amet elit. Phasellus ut mollis mauris. Vivamus egestas eleifend dui ac consequat at lectus in malesuada</p>
       <div class="hero-buttons">
-        <a href="#" class="btn primary">Get Started</a>
-        <a href="#" class="btn secondary">Watch Video</a>
+        <a href="{% url 'company_list' %}" class="btn primary">Get Started</a>
       </div>
     </div>
   </section>
+  <footer class="F1">
+    <p>@ 2025 G1. alright recived.</p>
+  </footer>
 </body>
 </html>

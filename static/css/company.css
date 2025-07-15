@@ -54,7 +54,6 @@ body {
 .hero {
   position: relative;
   background:linear-gradient(white,blue);
-  background-image:url("/static/Image/admin.jpg");
   height: 90vh;
   display: flex;
   align-items: center;
@@ -113,4 +112,32 @@ body {
 }
 #From{
   color: white;
+}
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+.auth-buttons a {
+  background-color: white;
+  color: #1751f0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.auth-buttons a:hover {
+  background-color: #59e3ebd6;
+  color: white;
+}
+.F1{
+  background-color:black;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }

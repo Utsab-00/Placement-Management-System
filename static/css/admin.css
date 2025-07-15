@@ -7,6 +7,10 @@
 
 body {
   background: #f5f5f5;
+  background-image:url("/static/Image/admin.jpg");
+  opacity:unset;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .navbar {
@@ -42,7 +46,7 @@ body {
 
 .nav-links a:hover,
 .nav-links .active {
-  background-color: #ff5c33;
+  background-color: #0dc2cf;
   color: white;
 }
 
@@ -54,10 +58,6 @@ body {
 }
 
 .hero {
-  background:linear-gradient(rgb(156, 108, 203),rgb(2, 12, 59));
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-image:url("/static/Image/company.jpg");
   height: 100vh;
   display: flex;
   align-items: center;
@@ -65,7 +65,7 @@ body {
 }
 
 .hero-content {
-  color: blue;
+  color:rgb(189, 8, 8);
   padding-left: 50px;
   max-width: 600px;
 }
@@ -95,4 +95,32 @@ body {
 
 .btn:hover {
   background-color: #1a32d1;
+}
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.auth-buttons a {
+  background-color: white;
+  color: #1751f0;
+  padding: 6px 14px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.auth-buttons a:hover {
+  background-color:#59e3ebd6;
+  color: white;
+}
+.F1{
+  background-color:black;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }

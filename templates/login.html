@@ -39,7 +39,6 @@
 
     <label for="user_type">User Type:</label>
     <select name="user_type" required>
-        <option value="" disabled selected>Select Type</option>
         <option value="student">Student</option>
         <option value="company">Company</option>
         <option value="admin">Admin</option>
@@ -49,6 +48,6 @@
 </form>
 
 <p>Don't have an account? <a href="{% url 'home' %}">Back to Home</a></p>
-<script src="{% static 'js/scripts1.js' %}"></script>
+
 </body>
 </html>

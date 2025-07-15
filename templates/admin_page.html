@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Consulting Agency</title>
+  <title>Placement Management System</title>
   <link rel="stylesheet" href="{% static 'css/admin.css' %}">
 </head>
 <body>
   <header class="navbar">
-    <div class="logo">NEGOTIATE CONSULTING</div>
+    <div class="logo">Placement Management System</div>
     <nav>
       <ul class="nav-links">
         <li><a href="{%url 'home'%}">Home</a></li>
@@ -18,17 +18,20 @@
      
       </ul>
     </nav>
-    <div class="search-box">
-      <input type="text" placeholder="Search">
+    <div class="auth-buttons">
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'admin_list' %}">Signup</a>
     </div>
   </header>
 
   <section class="hero">
     <div class="hero-content">
-      <h4>NEGOTIATE CONSULTING</h4>
-      <h1>We Are The Best<br>Consulting Agency</h1>
-      <a href="#" class="btn">Our Services</a>
+      <h4>Placement Management System</h4>
+      <h1>We Are The Best<br>Placement Cell</h1>
     </div>
   </section>
+  <footer class="F1">
+    <p>@ 2025 G1. alright recived.</p>
+  </footer>
 </body>
 </html>
