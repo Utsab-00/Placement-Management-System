@@ -4,7 +4,7 @@ from django.db import models
 class Student(models.Model):
     name = models.CharField(max_length=100, default="Unknown Student")
     student_id = models.CharField(max_length=50, unique=True, default="000000")
-    email = models.EmailField(null=True, blank=True, default="student@example.com")
+    email = models.EmailField(null=True, unique=True, blank=True, default="student@example.com")
     phone_number = models.CharField(max_length=16, null=True, blank=True, default="0000000000")
     branch = models.CharField(max_length=100, null=True, blank=True, default="Unknown Branch")
     year_of_study = models.CharField(max_length=20, null=True, blank=True, default="First Year")
@@ -12,7 +12,7 @@ class Student(models.Model):
     skills = models.TextField(null=True, blank=True, default="No skills listed")
     resume_link = models.URLField(null=True, blank=True, default="https://example.com")
     password = models.CharField(max_length=128, null=True, blank=True, default="password")  # hashed password
-
+    verified = models.BooleanField(default=False)
     class Meta:
         db_table = 'student'
 
@@ -32,12 +32,12 @@ class Student(models.Model):
 
 class Company(models.Model):
     company_name = models.CharField(max_length=100, default="Unknown Company")
-    website = models.URLField(null=True, blank=True, default="https://example.com")
+    company_website = models.URLField(null=True, blank=True, default="https://example.com")
     industry = models.CharField(max_length=100, null=True, blank=True, default="Unknown Industry")
-    address = models.TextField(null=True, blank=True, default="No address provided")
+    company_address = models.TextField(null=True, blank=True, default="No address provided")
     contact_name = models.CharField(max_length=100, default="Unknown Contact")
-    email = models.EmailField(default="company@example.com")
-    phone = models.CharField(max_length=16, null=True, blank=True, default="0000000000")
+    company_email = models.EmailField(default="company@example.com")
+    company_phone = models.CharField(max_length=16, null=True, blank=True, default="0000000000")
     job_profiles = models.TextField(null=True, blank=True, default="No job profiles listed")
     location = models.CharField(max_length=100, null=True, blank=True, default="Unknown Location")
     eligibility = models.TextField(null=True, blank=True, default="No eligibility criteria")
@@ -46,7 +46,7 @@ class Company(models.Model):
     internship = models.CharField(max_length=10, choices=[('Yes', 'Yes'), ('No', 'No')], default='No')
     other_info = models.TextField(null=True, blank=True, default="No additional info")
     password = models.CharField(max_length=128, null=True, blank=True, default="password")  # Increased for hashed passwords
-
+    verified = models.BooleanField(default=False)
     class Meta:
         db_table = 'company'
 
@@ -79,7 +79,7 @@ class Admin(models.Model):
     )
     experience = models.PositiveIntegerField(null=True, blank=True, default=0)
     password = models.CharField(max_length=128, default="password")
-
+    verified = models.BooleanField(default=False)
     class Meta:
         db_table = 'admin'
 

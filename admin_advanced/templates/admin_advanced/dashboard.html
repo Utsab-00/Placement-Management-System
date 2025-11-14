@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Advanced Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .nav { background: #343a40; padding: 10px; margin-bottom: 20px; }
+        .nav a { color: white; margin-right: 15px; text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .card { background: white; padding: 20px; margin: 10px 0; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'admin_advanced_dashboard' %}">Dashboard</a>
+        <a href="{% url 'manage_students' %}">Manage Students</a>
+        <a href="{% url 'manage_companies' %}">Manage Companies</a>
+        <a href="{% url 'manage_jobs' %}">Manage Jobs</a>
+        <a href="{% url 'admin_profile' %}">Profile</a>
+        <a href="{% url 'admin' %}">← Back to Basic Dashboard</a>
+    </div>
+    
+    <div class="container">
+        <h1>Admin Advanced Dashboard</h1>
+        
+        <div class="card">
+            <h2>Welcome to Advanced Admin Panel</h2>
+            <p>This is the advanced dashboard for administrators.</p>
+            <p>Total Students: {{ total_students }}</p>
+            <p>Total Companies: {{ total_companies }}</p>
+            <p>Verified Students: {{ verified_students }}</p>
+            <p>Verified Companies: {{ verified_companies }}</p>
+        </div>
+        
+        {% if recent_announcements %}
+        <div class="card">
+            <h3>Recent Announcements</h3>
+            <ul>
+                {% for announcement in recent_announcements %}
+                <li>{{ announcement.title }} - {{ announcement.created_date }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

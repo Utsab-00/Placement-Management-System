@@ -110,71 +110,71 @@
         Form submitted successfully! ✅
     </div>
 
-    <form id="companyForm">
+    <form id="companyForm" method="post"class="form-control" action="{% url 'company_list' %}">
         {% csrf_token %}
         <div class="form-group">
             <label for="companyName">Company Name:</label>
-            <input type="text" id="companyName" required>
+            <input type="text" id="company_name" name="company_name" required>
         </div>
 
         <div class="form-group">
             <label for="website">Website:</label>
-            <input type="url" id="website">
+            <input type="url" id="company_website" name="company_website">
         </div>
 
         <div class="form-group">
             <label for="industry">Industry Type:</label>
-            <input type="text" id="industry">
+            <input type="text" id="industry" name="industry">
         </div>
 
         <div class="form-group">
             <label for="address">Head Office Address:</label>
-            <textarea id="address" rows="2"></textarea>
+            <textarea id="company_address" rows="2" name="company_address"></textarea>
         </div>
 
         <div class="form-group">
             <label for="contactName">Contact Person Name:</label>
-            <input type="text" id="contactName" required>
+            <input type="text" id="contact_name"  name="contact_name" required>
         </div>
 
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" required>
+            <input type="email" id="company_email" name="company_email" required>
         </div>
 
         <div class="form-group">
             <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone">
+            <input type="tel" id="company_phone" name="company_phone">
         </div>
 
         <div class="form-group">
             <label for="jobProfiles">Job Profiles Offered:</label>
-            <textarea id="jobProfiles" rows="2"></textarea>
+            <textarea id="job_profiles" rows="2" name="job_profiles"></textarea>
         </div>
 
         <div class="form-group">
             <label for="location">Locations of Posting:</label>
-            <input type="text" id="location">
+            <input type="text" id="location" name="location">
         </div>
 
         <div class="form-group">
             <label for="eligibility">Eligibility Criteria:</label>
-            <textarea id="eligibility" rows="2"></textarea>
+            <textarea id="eligibility" rows="2" name="eligibility"></textarea>
         </div>
 
         <div class="form-group">
             <label for="selectionProcess">Selection Process:</label>
-            <textarea id="selectionProcess" rows="2"></textarea>
+            <textarea id="selection_process" rows="2" name="selection_process"></textarea>
         </div>
 
         <div class="form-group">
             <label for="ctc">CTC Offered:</label>
-            <input type="text" id="ctc">
+            <input type="text" id="ctc" name="ctc" placeholder="e.g., 5 LPA">
         </div>
 
         <div class="form-group">
             <label for="internship">Internship Offered:</label>
-            <select id="internship">
+            <select id="internship" name="internship">
                 <option value="No">No</option>
                 <option value="Yes">Yes</option>
             </select>
@@ -182,9 +182,12 @@
 
         <div class="form-group">
             <label for="otherInfo">Other Information:</label>
-            <textarea id="otherInfo" rows="2"></textarea>
+            <textarea id="other_info" name="other_info" rows="2"></textarea>
         </div>
-
+        <div class="form-group">
+            <label for="password">password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
         <button type="submit">Submit</button>
     </form>
 

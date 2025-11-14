@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .nav { background: #343a40; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .nav a { color: white; margin-right: 20px; text-decoration: none; padding: 8px 15px; border-radius: 4px; }
+        .nav a:hover { background: rgba(255,255,255,0.1); }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .profile-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .form-group { margin: 15px 0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .btn { background: #007bff; color: white; padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background: #0056b3; }
+        .messages { margin: 20px 0; }
+        .success { background: #d4edda; color: #155724; padding: 10px; border-radius: 4px; }
+        .section-title { border-bottom: 2px solid #007bff; padding-bottom: 10px; margin: 30px 0 20px 0; color: #343a40; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .readonly-field { background: #f8f9fa; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'admin_advanced_dashboard' %}">Dashboard</a>
+        <a href="{% url 'manage_students' %}">Manage Students</a>
+        <a href="{% url 'manage_companies' %}">Manage Companies</a>
+        <a href="{% url 'manage_jobs' %}">Manage Jobs</a>
+        <a href="{% url 'admin' %}">← Back to Basic Dashboard</a>
+    </div>
+    
+    <div class="container">
+        <h1>Admin Profile</h1>
+        
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="success">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="profile-card">
+            <form method="post">
+                {% csrf_token %}
+                
+                <h2 class="section-title">Administrative Information</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Admin Name *</label>
+                        <input type="text" name="admin_name" value="{{ admin.admin_name }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Admin ID</label>
+                        <input type="text" value="{{ admin.admin_id }}" class="readonly-field" readonly>
+                        <small>Admin ID cannot be changed</small>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" value="{{ admin.admin_email }}" class="readonly-field" readonly>
+                        <small>Email cannot be changed</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" name="admin_phone" value="{{ admin.admin_phone }}" placeholder="Enter your contact number">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select name="department">
+                            <option value="">Select Department</option>
+                            <option value="Placement" {% if admin.department == "Placement" %}selected{% endif %}>Placement</option>
+                            <option value="Academic" {% if admin.department == "Academic" %}selected{% endif %}>Academic</option>
+                            <option value="HR" {% if admin.department == "HR" %}selected{% endif %}>HR</option>
+                            <option value="IT" {% if admin.department == "IT" %}selected{% endif %}>IT</option>
+                            <option value="Administration" {% if admin.department == "Administration" %}selected{% endif %}>Administration</option>
+                            <option value="Training" {% if admin.department == "Training" %}selected{% endif %}>Training & Development</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select name="role">
+                            <option value="">Select Role</option>
+                            <option value="Placement Officer" {% if admin.role == "Placement Officer" %}selected{% endif %}>Placement Officer</option>
+                            <option value="Coordinator" {% if admin.role == "Coordinator" %}selected{% endif %}>Coordinator</option>
+                            <option value="Manager" {% if admin.role == "Manager" %}selected{% endif %}>Manager</option>
+                            <option value="Head" {% if admin.role == "Head" %}selected{% endif %}>Department Head</option>
+                            <option value="System Admin" {% if admin.role == "System Admin" %}selected{% endif %}>System Administrator</option>
+                            <option value="Supervisor" {% if admin.role == "Supervisor" %}selected{% endif %}>Supervisor</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Experience (Years)</label>
+                    <input type="number" name="experience" value="{{ admin.experience }}" min="0" max="50" placeholder="Years of experience">
+                </div>
+
+                <h2 class="section-title">System Access & Permissions</h2>
+                
+                <div class="form-group">
+                    <label>Verification Status</label>
+                    <input type="text" value="{% if admin.verified %}✅ Verified{% else %}❌ Not Verified{% endif %}" class="readonly-field" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label>Account Created</label>
+                    <input type="text" value="{{ admin.created_at|default:'N/A' }}" class="readonly-field" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label>Last Login</label>
+                    <input type="text" value="{% now 'M d, Y H:i' %}" class="readonly-field" readonly>
+                    <small>Current session</small>
+                </div>
+
+                <h2 class="section-title">Administrative Notes</h2>
+                
+                <div class="form-group">
+                    <label>System Preferences</label>
+                    <textarea placeholder="Add any administrative notes or preferences..." rows="4"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Contact Hours</label>
+                    <input type="text" placeholder="e.g., 9:00 AM - 5:00 PM">
+                </div>
+
+                <button type="submit" class="btn">Update Admin Profile</button>
+            </form>
+        </div>
+
+        <!-- Admin Statistics Card -->
+        <div class="profile-card" style="margin-top: 30px;">
+            <h2 class="section-title">System Overview</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Total Students</label>
+                    <input type="text" value="{{ total_students|default:'0' }}" class="readonly-field" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Total Companies</label>
+                    <input type="text" value="{{ total_companies|default:'0' }}" class="readonly-field" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Verified Students</label>
+                    <input type="text" value="{{ verified_students|default:'0' }}" class="readonly-field" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Verified Companies</label>
+                    <input type="text" value="{{ verified_companies|default:'0' }}" class="readonly-field" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

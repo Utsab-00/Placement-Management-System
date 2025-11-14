@@ -1,10 +1,10 @@
-{% load static %} 
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Django App{% endblock %}</title>
+    <title>{% block title %}Placement Portal{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script src="{% static 'js/scripts.js' %}" defer></script>
 </head>
@@ -12,17 +12,33 @@
     <nav>
         <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'student_list' %}">Students</a></li>
-            <li><a href="{% url 'company_list' %}">Companies</a></li>
-            <li><a href="{% url 'admin_list' %}">Admins</a></li>
+            
             {% if request.session.logged_in %}
-                <li>Welcome, {{ request.session.username }}</li>
+                <!-- LOGGED IN - Show user-specific options -->
+                <li>Welcome, {{ request.session.email }}</li>
+                
+                {% if request.session.user_type == 'student' %}
+                    <li><a href="{% url 'student' %}">Basic Dashboard</a></li>
+                    <li><a href="{% url 'student_advanced_dashboard' %}">Advanced Dashboard</a></li>
+                {% elif request.session.user_type == 'company' %}
+                    <li><a href="{% url 'company' %}">Basic Dashboard</a></li>
+                    <li><a href="{% url 'company_advanced_dashboard' %}">Advanced Dashboard</a></li>
+                {% elif request.session.user_type == 'admin' %}
+                    <li><a href="{% url 'admin' %}">Basic Dashboard</a></li>
+                    <li><a href="{% url 'admin_advanced_dashboard' %}">Advanced Dashboard</a></li>
+                {% endif %}
+                
                 <li><a href="{% url 'logout' %}">Logout</a></li>
             {% else %}
+                <!-- NOT LOGGED IN - Show registration options -->
+                <li><a href="{% url 'student_list' %}">Student Registration</a></li>
+                <li><a href="{% url 'company_list' %}">Company Registration</a></li>
+                <li><a href="{% url 'admin_list' %}">Admin Registration</a></li>
                 <li><a href="{% url 'login' %}">Login</a></li>
             {% endif %}
         </ul>
     </nav>
+    
     <div class="content">
         {% block content %}
         {% endblock %}

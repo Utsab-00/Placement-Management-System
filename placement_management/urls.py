@@ -18,6 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+
+     # Advanced dashboards FIRST (before admin)
+    path('student/advanced/', include('student_advanced.urls')),
+    path('company/advanced/', include('company_advanced.urls')),
+    path('admin/advanced/', include('admin_advanced.urls')),
+    
+    #THEN your main app
     path('admin/', admin.site.urls),
     path('', include('loginsystem.urls')),
+    path('email/', include('emailverification.urls')),
 ]

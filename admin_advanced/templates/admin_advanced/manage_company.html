@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Companies - Admin</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .nav { background: #343a40; padding: 10px; margin-bottom: 20px; }
+        .nav a { color: white; margin-right: 15px; text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .search-box { margin: 20px 0; padding: 10px; background: #f8f9fa; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #343a40; color: white; }
+        .verified { color: green; }
+        .unverified { color: red; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'admin_advanced_dashboard' %}">Dashboard</a>
+        <a href="{% url 'manage_students' %}">Manage Students</a>
+        <a href="{% url 'manage_companies' %}">Manage Companies</a>
+        <a href="{% url 'manage_jobs' %}">Manage Jobs</a>
+        <a href="{% url 'admin_profile' %}">Profile</a>
+        <a href="{% url 'admin' %}">← Back to Basic Dashboard</a>
+    </div>
+    
+    <div class="container">
+        <h1>Manage Companies</h1>
+        
+        <div class="search-box">
+            <form method="get">
+                <input type="text" name="search" placeholder="Search companies..." value="{{ search_query }}">
+                <select name="status">
+                    <option value="">All Status</option>
+                    <option value="verified" {% if status_filter == 'verified' %}selected{% endif %}>Verified</option>
+                    <option value="unverified" {% if status_filter == 'unverified' %}selected{% endif %}>Unverified</option>
+                </select>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Email</th>
+                    <th>Industry</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for company in companies %}
+                <tr>
+                    <td>{{ company.company_name }}</td>
+                    <td>{{ company.company_email }}</td>
+                    <td>{{ company.industry }}</td>
+                    <td>{{ company.location }}</td>
+                    <td>
+                        {% if company.verified %}
+                            <span class="verified">✓ Verified</span>
+                        {% else %}
+                            <span class="unverified">✗ Unverified</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'toggle_verification' 'company' company.id %}">
+                            {% if company.verified %}
+                                Unverify
+                            {% else %}
+                                Verify
+                            {% endif %}
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No companies found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

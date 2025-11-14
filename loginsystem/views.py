@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Student, Company, Admin
 from django.middleware.csrf import get_token
+from emailverification.utils import send_otp_email
 
 # Home page
 def home(request):
     return render(request, 'home.html')
-
 
 # Student List + Add Student
 def student_list(request):
@@ -33,27 +33,33 @@ def student_list(request):
                 cgpa=cgpa if cgpa else None,
                 skills=skills,
                 resume_link=resume_link,
-                password=password
+                password=password,
+                verified=False
             )
             student.save()
-            messages.success(request, "Student added successfully.")
 
-        return redirect("student_list")
+            # AUTO-CREATE STUDENT PROFILE
+            from student_advanced.models import StudentProfile
+            StudentProfile.objects.create(student=student)
+            
+            send_otp_email(email, 'student')
+            request.session['pending_email'] = email
+            request.session['user_type'] = 'student'
+            return redirect('emailverification:verify_otp')
 
     students = Student.objects.all()
     return render(request, "students.html", {"students": students})
-
 
 # Company List + Add Company
 def company_list(request):
     if request.method == "POST":
         company_name = request.POST.get("company_name")
-        website = request.POST.get("website")
+        company_website = request.POST.get("company_website")
         industry = request.POST.get("industry")
-        address = request.POST.get("address")
+        company_address = request.POST.get("company_address")
         contact_name = request.POST.get("contact_name")
-        email = request.POST.get("email")
-        phone = request.POST.get("phone")
+        company_email = request.POST.get("company_email")
+        company_phone = request.POST.get("company_phone")
         job_profiles = request.POST.get("job_profiles")
         location = request.POST.get("location")
         eligibility = request.POST.get("eligibility")
@@ -63,15 +69,15 @@ def company_list(request):
         other_info = request.POST.get("other_info")
         password = request.POST.get("password")
 
-        if company_name and email and password:
+        if company_name and company_email and password:
             company = Company(
                 company_name=company_name,
-                website=website,
+                company_website=company_website,
                 industry=industry,
-                address=address,
+                company_address=company_address,
                 contact_name=contact_name,
-                email=email,
-                phone=phone,
+                company_email=company_email,
+                company_phone=company_phone,
                 job_profiles=job_profiles,
                 location=location,
                 eligibility=eligibility,
@@ -79,16 +85,22 @@ def company_list(request):
                 ctc=ctc,
                 internship=internship or "No",
                 other_info=other_info,
-                password=password
+                password=password,
+                verified=False
             )
             company.save()
-            messages.success(request, "Company added successfully.")
 
-        return redirect("company_list")
+            # AUTO-CREATE COMPANY PROFILE
+            from company_advanced.models import CompanyProfile
+            CompanyProfile.objects.create(company=company)
+            
+            send_otp_email(company_email, 'company')
+            request.session['pending_email'] = company_email
+            request.session['user_type'] = 'company'
+            return redirect('emailverification:verify_otp')
 
     companies = Company.objects.all()
     return render(request, "companies.html", {"companies": companies})
-
 
 # Admin List + Add Admin
 def admin_list(request):
@@ -111,44 +123,58 @@ def admin_list(request):
                 department=department,
                 role=role,
                 experience=int(experience) if experience else None,
-                password=password
+                password=password,
+                verified=False
             )
             admin.save()
-            messages.success(request, "Admin added successfully.")
 
-        return redirect("admin_list")
+            send_otp_email(admin_email, 'admin')
+            request.session['pending_email'] = admin_email
+            request.session['user_type'] = 'admin'
+            return redirect('emailverification:verify_otp')
 
     admins = Admin.objects.all()
     return render(request, "admins.html", {"admins": admins})
 
-
 # Login View
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        email = request.POST.get('email')
         password = request.POST.get('password')
         user_type = request.POST.get('user_type')
 
         user = None
 
         if user_type == 'admin':
-            user = Admin.objects.filter(admin_name=username).first()
+            user = Admin.objects.filter(admin_email=email).first()
         elif user_type == 'student':
-            user = Student.objects.filter(name=username).first()
+            user = Student.objects.filter(email=email).first()
         elif user_type == 'company':
-            user = Company.objects.filter(company_name=username).first()
+            user = Company.objects.filter(company_email=email).first()
 
+        # Use the model's check_password method
         if user and user.check_password(password):
+            if not user.verified:
+                messages.error(request, 'Please verify your email first.')
+                return redirect('login')
+
             request.session['logged_in'] = True
-            request.session['username'] = username
+            request.session['email'] = email
             request.session['user_type'] = user_type
+            request.session['user_id'] = user.id
             request.session["csrf_token"] = get_token(request)
-            return redirect('home')
+            
+            # Redirect to BASIC dashboard first
+            if user_type == 'student':
+                return redirect('student')
+            elif user_type == 'company':
+                return redirect('company')
+            elif user_type == 'admin':
+                return redirect('admin')
         else:
-            messages.error(request, 'Invalid username or password.')
+            messages.error(request, 'Invalid email or password.')
 
     return render(request, 'login.html')
-
 
 # Logout View
 def logout_view(request):
@@ -156,15 +182,78 @@ def logout_view(request):
     messages.success(request, 'You have been logged out.')
     return redirect('login')
 
-# Dashboards
-def admin_page(request):
-    """Render the admin page."""
-    return render(request, 'admin_page.html')
+# UPDATED BASIC DASHBOARDS
+def student_page(request):
+    if not request.session.get('logged_in') or request.session.get('user_type') != 'student':
+        return redirect('login')
+    
+    student = Student.objects.get(email=request.session['email'])
+    
+    # LAZY IMPORT to avoid circular imports
+    from student_advanced.models import JobApplication
+    total_applications = JobApplication.objects.filter(student=student).count()
+    interviews_scheduled = JobApplication.objects.filter(student=student, status='interview').count()
+    
+    context = {
+        'student': student,
+        'total_applications': total_applications,
+        'interviews_scheduled': interviews_scheduled,
+    }
+    return render(request, 'student_page.html', context)
 
 def company_page(request):
-    """Render the company page."""
-    return render(request, 'company_page.html')
+    if not request.session.get('logged_in') or request.session.get('user_type') != 'company':
+        return redirect('login')
+    
+    company = Company.objects.get(company_email=request.session['email'])
+    
+    # LAZY IMPORT to avoid circular imports
+    from company_advanced.models import CompanyJob, Application
+    total_jobs = CompanyJob.objects.filter(company=company).count()
+    total_applications = Application.objects.filter(job__company=company).count()
+    
+    context = {
+        'company': company,
+        'total_jobs': total_jobs,
+        'total_applications': total_applications,
+    }
+    return render(request, 'company_page.html', context)
 
-def student_page(request):
-    """Render the student page."""
-    return render(request, 'student_page.html')
+def admin_page(request):
+    if not request.session.get('logged_in') or request.session.get('user_type') != 'admin':
+        return redirect('login')
+    
+    admin = Admin.objects.get(admin_email=request.session['email'])
+    
+    # Get some basic stats for the basic dashboard
+    total_students = Student.objects.count()
+    total_companies = Company.objects.count()
+    verified_students = Student.objects.filter(verified=True).count()
+    verified_companies = Company.objects.filter(verified=True).count()
+    
+    context = {
+        'admin': admin,
+        'total_students': total_students,
+        'total_companies': total_companies,
+        'verified_students': verified_students,
+        'verified_companies': verified_companies,
+    }
+    return render(request, 'admin_page.html', context)
+
+# NEW VIEW: Redirect to Advanced Dashboard
+def redirect_to_advanced_dashboard(request):
+    if not request.session.get('logged_in'):
+        messages.error(request, 'Please login first.')
+        return redirect('login')
+    
+    user_type = request.session.get('user_type')
+    
+    if user_type == 'student':
+        return redirect('student_advanced_dashboard')  # Make sure this matches
+    elif user_type == 'company':
+        return redirect('company_advanced_dashboard')  # Make sure this matches
+    elif user_type == 'admin':
+        return redirect('admin_advanced_dashboard')    # Make sure this matches
+    else:
+        messages.error(request, 'Invalid user type.')
+        return redirect('home')

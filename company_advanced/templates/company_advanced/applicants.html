@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Applicants - Company</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .nav { background: #343a40; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .nav a { color: white; margin-right: 20px; text-decoration: none; padding: 8px 15px; border-radius: 4px; }
+        .nav a:hover { background: rgba(255,255,255,0.1); }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .filters { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #343a40; color: white; }
+        .status-applied { color: #ffc107; }
+        .status-under_review { color: #17a2b8; }
+        .status-shortlisted { color: #007bff; }
+        .status-interview { color: #6610f2; }
+        .status-accepted { color: #28a745; }
+        .status-rejected { color: #dc3545; }
+        .empty-state { background: white; padding: 40px; text-align: center; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'company_advanced_dashboard' %}">Dashboard</a>
+        <a href="{% url 'post_jobs' %}">Post Jobs</a>
+        <a href="{% url 'view_applicants' %}">View Applicants</a>
+        <a href="{% url 'company_profile' %}">Profile</a>
+        <a href="{% url 'company' %}">← Back to Basic Dashboard</a>
+    </div>
+    
+    <div class="container">
+        <h1>Job Applicants</h1>
+        
+        <div class="filters">
+            <form method="get">
+                <label>Filter by Status:</label>
+                <select name="status">
+                    <option value="">All Status</option>
+                    <option value="applied" {% if status_filter == 'applied' %}selected{% endif %}>Applied</option>
+                    <option value="under_review" {% if status_filter == 'under_review' %}selected{% endif %}>Under Review</option>
+                    <option value="shortlisted" {% if status_filter == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+                    <option value="interview" {% if status_filter == 'interview' %}selected{% endif %}>Interview</option>
+                    <option value="accepted" {% if status_filter == 'accepted' %}selected{% endif %}>Accepted</option>
+                    <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Rejected</option>
+                </select>
+                
+                <label>Filter by Job:</label>
+                <select name="job">
+                    <option value="">All Jobs</option>
+                    {% for job in jobs %}
+                    <option value="{{ job.id }}" {% if job_filter == job.id|stringformat:"i" %}selected{% endif %}>{{ job.title }}</option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit">Apply Filters</button>
+            </form>
+        </div>
+
+        {% if applications %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Applicant Name</th>
+                    <th>Job Title</th>
+                    <th>Applied Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td>{{ application.student.name }}</td>
+                    <td>{{ application.job.title }}</td>
+                    <td>{{ application.applied_date|date:"M d, Y" }}</td>
+                    <td class="status-{{ application.status }}">
+                        {{ application.get_status_display }}
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'update_application_status' application.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <select name="status">
+                                <option value="applied" {% if application.status == 'applied' %}selected{% endif %}>Applied</option>
+                                <option value="under_review" {% if application.status == 'under_review' %}selected{% endif %}>Under Review</option>
+                                <option value="shortlisted" {% if application.status == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+                                <option value="interview" {% if application.status == 'interview' %}selected{% endif %}>Interview</option>
+                                <option value="accepted" {% if application.status == 'accepted' %}selected{% endif %}>Accepted</option>
+                                <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                            </select>
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <h3>No Applicants Found</h3>
+            <p>No applicants match your current filters.</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

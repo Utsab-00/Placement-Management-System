@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Jobs - Admin</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .nav { background: #343a40; padding: 10px; margin-bottom: 20px; }
+        .nav a { color: white; margin-right: 15px; text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .filter-box { margin: 20px 0; padding: 10px; background: #f8f9fa; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #343a40; color: white; }
+        .active { color: green; }
+        .inactive { color: red; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'admin_advanced_dashboard' %}">Dashboard</a>
+        <a href="{% url 'manage_students' %}">Manage Students</a>
+        <a href="{% url 'manage_companies' %}">Manage Companies</a>
+        <a href="{% url 'manage_jobs' %}">Manage Jobs</a>
+        <a href="{% url 'admin_profile' %}">Profile</a>
+        <a href="{% url 'admin' %}">← Back to Basic Dashboard</a>
+    </div>
+    
+    <div class="container">
+        <h1>Manage Jobs</h1>
+        
+        <div class="filter-box">
+            <form method="get">
+                <select name="active">
+                    <option value="">All Jobs</option>
+                    <option value="active" {% if active_filter == 'active' %}selected{% endif %}>Active</option>
+                    <option value="inactive" {% if active_filter == 'inactive' %}selected{% endif %}>Inactive</option>
+                </select>
+                <button type="submit">Filter</button>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Posted Date</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                <tr>
+                    <td>{{ job.title }}</td>
+                    <td>{{ job.company.company_name }}</td>
+                    <td>{{ job.location }}</td>
+                    <td>{{ job.posted_date|date:"M d, Y" }}</td>
+                    <td>{{ job.deadline|date:"M d, Y" }}</td>
+                    <td>
+                        {% if job.is_active %}
+                            <span class="active">✓ Active</span>
+                        {% else %}
+                            <span class="inactive">✗ Inactive</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No jobs found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

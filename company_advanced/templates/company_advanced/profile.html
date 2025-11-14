@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .nav { background: #343a40; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .nav a { color: white; margin-right: 20px; text-decoration: none; padding: 8px 15px; border-radius: 4px; }
+        .nav a:hover { background: rgba(255,255,255,0.1); }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .profile-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .form-group { margin: 15px 0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        textarea { height: 100px; resize: vertical; }
+        .btn { background: #007bff; color: white; padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background: #0056b3; }
+        .messages { margin: 20px 0; }
+        .success { background: #d4edda; color: #155724; padding: 10px; border-radius: 4px; }
+        .section-title { border-bottom: 2px solid #007bff; padding-bottom: 10px; margin: 30px 0 20px 0; color: #343a40; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .readonly-field { background: #f8f9fa; color: #6c757d; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-item { background: #f8f9fa; padding: 15px; border-radius: 5px; text-align: center; }
+        .stat-number { font-size: 1.5rem; font-weight: bold; color: #007bff; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'company_advanced_dashboard' %}">Dashboard</a>
+        <a href="{% url 'post_jobs' %}">Post Jobs</a>
+        <a href="{% url 'view_applicants' %}">View Applicants</a>
+        <a href="{% url 'company_profile' %}">Profile</a>
+        <a href="{% url 'company' %}">← Back to Basic Dashboard</a>
+    </div>
+    
+    <div class="container">
+        <h1>Company Profile</h1>
+        
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="success">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="profile-card">
+            <form method="post">
+                {% csrf_token %}
+                
+                <h2 class="section-title">Company Basic Information</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Company Name *</label>
+                        <input type="text" name="company_name" value="{{ company.company_name }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Contact Person *</label>
+                        <input type="text" name="contact_name" value="{{ company.contact_name }}" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Company Email</label>
+                        <input type="email" value="{{ company.company_email }}" class="readonly-field" readonly>
+                        <small>Email cannot be changed</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" name="company_phone" value="{{ company.company_phone }}" placeholder="Enter company contact number">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Industry</label>
+                        <input type="text" name="industry" value="{{ company.industry }}" placeholder="e.g., IT, Finance, Healthcare">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" name="location" value="{{ company.location }}" placeholder="e.g., City, State">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Company Website</label>
+                    <input type="url" name="company_website" value="{{ company.company_website }}" placeholder="https://yourcompany.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Company Address</label>
+                    <textarea name="company_address" placeholder="Full company address">{{ company.company_address }}</textarea>
+                </div>
+
+                <h2 class="section-title">Company Details</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Founded Year</label>
+                        <input type="number" name="founded_year" value="{{ profile.founded_year }}" min="1900" max="{% now 'Y' %}" placeholder="e.g., 2010">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Company Size</label>
+                        <select name="company_size">
+                            <option value="">Select Company Size</option>
+                            <option value="1-10" {% if profile.company_size == "1-10" %}selected{% endif %}>1-10 employees</option>
+                            <option value="11-50" {% if profile.company_size == "11-50" %}selected{% endif %}>11-50 employees</option>
+                            <option value="51-200" {% if profile.company_size == "51-200" %}selected{% endif %}>51-200 employees</option>
+                            <option value="201-500" {% if profile.company_size == "201-500" %}selected{% endif %}>201-500 employees</option>
+                            <option value="501-1000" {% if profile.company_size == "501-1000" %}selected{% endif %}>501-1000 employees</option>
+                            <option value="1000+" {% if profile.company_size == "1000+" %}selected{% endif %}>1000+ employees</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Company Description</label>
+                    <textarea name="description" placeholder="Describe your company, mission, and values...">{{ profile.description }}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Website</label>
+                    <input type="url" name="website" value="{{ profile.website }}" placeholder="https://company-careers.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Social Media Links</label>
+                    <textarea name="social_links" placeholder="Add links to LinkedIn, Twitter, Facebook, etc. (one per line)">{{ profile.social_links }}</textarea>
+                </div>
+
+                <h2 class="section-title">Recruitment Information</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Job Profiles Offered</label>
+                        <textarea name="job_profiles" placeholder="Types of roles you typically hire for">{{ company.job_profiles }}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Eligibility Criteria</label>
+                        <textarea name="eligibility" placeholder="General eligibility requirements">{{ company.eligibility }}</textarea>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Selection Process</label>
+                        <textarea name="selection_process" placeholder="Your typical hiring process">{{ company.selection_process }}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>CTC Offered</label>
+                        <input type="text" name="ctc" value="{{ company.ctc }}" placeholder="e.g., 6-8 LPA">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Internship Opportunities</label>
+                    <select name="internship">
+                        <option value="No" {% if company.internship == "No" %}selected{% endif %}>No</option>
+                        <option value="Yes" {% if company.internship == "Yes" %}selected{% endif %}>Yes</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Additional Information</label>
+                    <textarea name="other_info" placeholder="Any other relevant information">{{ company.other_info }}</textarea>
+                </div>
+
+                <button type="submit" class="btn">Update Company Profile</button>
+            </form>
+        </div>
+
+        <!-- Company Statistics Card -->
+        <div class="profile-card" style="margin-top: 30px;">
+            <h2 class="section-title">Company Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">{{ total_jobs|default:"0" }}</div>
+                    <div>Total Jobs Posted</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ active_jobs|default:"0" }}</div>
+                    <div>Active Jobs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ total_applications|default:"0" }}</div>
+                    <div>Total Applications</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">
+                        {% if company.verified %}✅{% else %}❌{% endif %}
+                    </div>
+                    <div>Verification Status</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
