@@ -28,4 +28,5 @@ COPY . .
 EXPOSE 8000
 
 # Command to run your Django development server when the container starts
+RUN python manage.py collectstatic --noinput
 CMD gunicorn placement_management.wsgi:application --bind 0.0.0.0:$PORT
