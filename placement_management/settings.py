@@ -144,11 +144,11 @@ SESSION_COOKIE_AGE = 3600  # 1 hour
 CSRF_COOKIE_AGE = 3600  # 1 hour
 CSRF_COOKIE_HTTPONLY = True  # Adds extra security
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+'''EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' '''
 
-"""EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'sweety11850@gmail.com'
-EMAIL_HOST_PASSWORD = 'mbuy fekg kbvi dpqs'"""
+EMAIL_HOST_PASSWORD = 'mbuy fekg kbvi dpqs'
