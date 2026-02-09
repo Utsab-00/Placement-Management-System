@@ -78,19 +78,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'placement_management.wsgi.application'
 
+import os
+SECRET_KEY = os.environ.get("sCTEeAL1hsbJFH04a2FINK8Fhflj3mLu3LOlJuKf17KSt-yihvKEr4kF7GgNQI_whBk")
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-import dj_database_url
-import os
-
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'placement_postgresql',
+        'USER': 'placement_postgresql_user',
+        'PASSWORD': 'YzhzHZI7zIbsc7pbxJuwKcEshGbkQQ8k',
+        'HOST': 'dpg-d63c1oa4d50c73dj9kq0-a.oregon-postgres.render.com',
+        'PORT': '5432',
+        'CONN_MAX_AGE': 600,  # Keep connections open for 10 minutes
+        'OPTIONS': {
+            'sslmode': 'require'  # add this for SSL
+        }
+    }
 }
 
 
