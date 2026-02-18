@@ -78,8 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'placement_management.wsgi.application'
 
-import os
-SECRET_KEY = os.environ.get("sCTEeAL1hsbJFH04a2FINK8Fhflj3mLu3LOlJuKf17KSt-yihvKEr4kF7GgNQI_whBk")
+SECRET_KEY = "sCTEeAL1hsbJFH04a2FINK8Fhflj3mLu3LOlJuKf17KSt-yihvKEr4kF7GgNQI_whBk"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
