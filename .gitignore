@@ -1,0 +1,18 @@
+.env
+.env.*
+!.env.example
+
+# Local database
+db.sqlite3
+db.sqlite3-journal
+
+# Django generated files
+staticfiles/
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo

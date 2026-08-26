@@ -9,6 +9,10 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from pathlib import Path
 
@@ -78,19 +82,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'placement_management.wsgi.application'
 
-SECRET_KEY = 
+import os
+import dj_database_url
+
+SECRET_KEY = os.environ["SECRET_KEY"]
+
+DEBUG = False
+
+DATABASES = {
+    "default": dj_database_url.config(
+        default=os.environ["DATABASE_URL"]
+    )
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-import dj_database_url
 import os
+import dj_database_url
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default="postgresql://placement_postgresql_user:YzhzHZI7zIbsc7pbxJuwKcEshGbkQQ8k@dpg-d63c1oa4d50c73dj9kq0-a.oregon-postgres.render.com/placement_postgresql",
+    "default": dj_database_url.config(
+        default=os.getenv('postgresql://placement_system_qrlg_user:9jlJyGxUvtFljdBDYyrjuqlmu6XfwGlC@dpg-da7c0he1egvs73e656tg-a/placement_system_qrlg'),
         conn_max_age=600,
-        ssl_require=True
+        ssl_require=False,   # Render internal PostgreSQL doesn't need SSL
     )
 }
 
