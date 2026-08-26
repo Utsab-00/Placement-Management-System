@@ -9,11 +9,6 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -83,17 +78,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'placement_management.wsgi.application'
 
 import os
-import dj_database_url
+from dotenv import load_dotenv
+
+load_dotenv()
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 
 DEBUG = False
-
-DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ["DATABASE_URL"]
-    )
-}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
